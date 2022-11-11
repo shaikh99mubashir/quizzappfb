@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import InfoSelect from "./AdminScreens/InfoSelect";
+import { signUpUser } from "../Component/FirebaseConfig/FirebaseMethod";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { getDatabase, ref, push } from "firebase/database";
-import app from "../FirebaseConfig/Config";
-import BasicDatePicker from "./DatePicket";
-import InfoSelect from "./InfoSelect";
+import app from "../Component/FirebaseConfig/Config";
+import BasicDatePicker from "../Component/UsersScreens/DatePicket";
 import Checkbox from "@mui/material/Checkbox";
 import { useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const Information = () => {
+const Regisration = () => {
   let days = ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat", "Sun"];
   let months = [
     "Jan",
@@ -36,11 +38,12 @@ const Information = () => {
   let [dobYear, setDobYear] = useState("");
   let [stdRollNo, setStdRollNo] = useState(0);
   let [checkBox, setCheckBox] = useState(false);
-  let [course, setCourse] = useState('')
-  let [section, setSection] = useState('')
-  useEffect(()=>{
-    setCheckBox(false)
-  },[checkBox])
+  let [course, setCourse] = useState("");
+  let [section, setSection] = useState("");
+  const navigate = useNavigate();
+  useEffect(() => {
+    setCheckBox(false);
+  }, [checkBox]);
 
   const [data, setData] = useState({
     firstName: "",
@@ -49,18 +52,21 @@ const Information = () => {
     section: "",
     contact: "",
     cnic: "",
+    email: "",
+    password: "",
+    dob: "",
+    age: "",
     fatherName: "",
     fatherCnic: "",
     fatherContact: "",
     emergencyContact: "",
-    dob: "",
-    age: "",
     registrationDate: "",
     registrationYear: "",
     isFeeSubmited: false,
     isApproved: false,
     isActive: false,
     rollNo: "0",
+    isOwner:'',
   });
   let userAge = dobYear ? year - dobYear : "";
   const setfeildinDatbase = () => {
@@ -69,7 +75,6 @@ const Information = () => {
     stdRollNo = stdRollNo.toString();
     setStdRollNo(stdRollNo);
     let roll = `0000${stdRollNo}`;
-    const reference = ref(database, `students`);
     data.registrationDate = registrationDateis;
     data.registrationYear = year;
     data.rollNo = roll;
@@ -78,44 +83,59 @@ const Information = () => {
     data.section = section
     data.course = course
     setData(data);
-    push(reference, data);
+    let value = Object.values(data)
+    let count = 0
+    value.forEach((e,i)=>{
+      if(e === ""){
+        count = count+1
+      }
+    })
+    if(count){
+      alert('inComplete Feilds')
+    }
+    else{
+      signUpUser(data)
+      .then((success)=>{
+      alert(success)
+      console.log('success==>',success)
+      setData('')
+      navigate('/')
+    })
+    .catch((error)=>{
+        console.log('error==>',error)
+    })  
+    }
+    
   };
   const [firstNameError, setNameError] = useState(false);
   const [fatherNameError, setFatherError] = useState(false);
   const firstNameRegex = /^[A-Za-z]+$/;
   const fatherNameRegex = /^[A-Za-z]+$/;
 
-  const handelFirstName =(e)=>{
+  const handelFirstName = (e) => {
     let firstName = e.target.value;
-    if(!firstName.match(firstNameRegex)){
-      setNameError(true)
-      }
-      else{
-        setNameError(false)
+    if (!firstName.match(firstNameRegex)) {
+      setNameError(true);
+    } else {
+      setNameError(false);
     }
     setData((prev) => ({
       ...prev,
       firstName: e.target.value,
-    }))
-  }
-  const handelFatherName =(e)=>{
+    }));
+  };
+  const handelFatherName = (e) => {
     let fatherName = e.target.value;
-    if(!fatherName.match(fatherNameRegex)){
-      setFatherError(true)
-      }
-      else{
-        setFatherError(false)
+    if (!fatherName.match(fatherNameRegex)) {
+      setFatherError(true);
+    } else {
+      setFatherError(false);
     }
     setData((prev) => ({
       ...prev,
       fatherName: e.target.value,
-    }))
-  }
-
-  const checkBoxTicked =()=>{
-    setCheckBox(true)
-    alert("check box ticked")
-  }
+    }));
+  };
 
   return (
     <Box>
@@ -141,24 +161,26 @@ const Information = () => {
           }}
         >
           <Box sx={{ display: "grid", placeItems: "center" }}>
-            <Typography variant="p" sx={{ fontSize: "2.5rem" }}>
-              INFORMATION
+            <Typography variant="p" sx={{ fontSize:{ md:"2.5rem", sm:'2.3rem', xs:'1.5erm' }}}>
+              Registration
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
-            <Grid item md={4} sm={6} xs={12}>
-            <Box>
-            {firstNameError ? <span style={{color:"red", fontSize:10}}>Invalid</span> : null}
-              <TextField
-                fullWidth={true}
-                required
-                type='text'
-                onChange={handelFirstName}
-                id="standard-basic"
-                label="First Name"
-                variant="standard"
-              />
-            </Box>
+            <Grid item md={4} sm={8} xs={12}>
+              <Box>
+                {firstNameError ? (
+                  <span style={{ color: "red", fontSize: 10 }}>Invalid</span>
+                ) : null}
+                <TextField
+                  fullWidth={true}
+                  required
+                  type="text"
+                  onChange={handelFirstName}
+                  id="standard-basic"
+                  label="First Name"
+                  variant="standard"
+                />
+              </Box>
             </Grid>
             <Grid item md={4} sm={8} xs={12}>
               <TextField
@@ -173,8 +195,11 @@ const Information = () => {
             </Grid>
             {/* Course */}
             <Grid item md={4} sm={8} xs={12}>
-              <InfoSelect  dropDownItem={setCourse} value={course} label='Course'
-              variant="standard"
+              <InfoSelect
+                dropDownItem={setCourse}
+                value={course}
+                label="Course"
+                variant="standard"
                 dataSource={[
                   {
                     id: "wm",
@@ -186,15 +211,16 @@ const Information = () => {
                   },
                 ]}
               />
-               
             </Grid>
           </Box>
           <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
             <Grid item md={4} sm={8} xs={12}>
               {/* section */}
               <InfoSelect
-              variant="standard"
-                dropDownItem={setSection} value={section} label='Section'
+                variant="standard"
+                dropDownItem={setSection}
+                value={section}
+                label="Section"
                 dataSource={[
                   {
                     id: "am",
@@ -210,6 +236,7 @@ const Information = () => {
             <Grid item md={4} sm={8} xs={12}>
               <TextField
                 fullWidth={true}
+                type='number'
                 required
                 onChange={(e) =>
                   setData((prev) => ({ ...prev, contact: e.target.value }))
@@ -227,6 +254,7 @@ const Information = () => {
                   setData((prev) => ({ ...prev, cnic: e.target.value }))
                 }
                 id="standard-basic"
+                type='number'
                 label="Cnic"
                 variant="standard"
               />
@@ -247,10 +275,62 @@ const Information = () => {
                 variant="standard"
               />
             </Grid>
+
+            <Grid item md={4} sm={8} xs={12}>
+              <TextField
+                fullWidth={true}
+                required
+                type='number'
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    emergencyContact: e.target.value,
+                  }))
+                }
+                id="standard-basic"
+                label="Emergency Contact"
+                variant="standard"
+              />
+            </Grid>
           </Box>
           <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
             <Grid item md={4} sm={8} xs={12}>
-            {firstNameError ? <span style={{color:"red", fontSize:10}}>Invalid</span> : null}
+              <TextField
+                fullWidth={true}
+                required
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    email: e.target.value,
+                  }))
+                }
+                id="standard-basic"
+                label="Email"
+                variant="standard"
+              />
+            </Grid>
+
+            <Grid item md={4} sm={8} xs={12}>
+              <TextField
+                fullWidth
+                type='password'
+                onChange={(e) =>
+                  setData((prev) => ({
+                    ...prev,
+                    password: e.target.value,
+                  }))
+                }
+                id="standard-basic"
+                label="Password"
+                variant="standard"
+              />
+            </Grid>
+          </Box>
+          <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
+            <Grid item md={4} sm={8} xs={12}>
+              {firstNameError ? (
+                <span style={{ color: "red", fontSize: 10 }}>Invalid</span>
+              ) : null}
               <TextField
                 fullWidth={true}
                 required
@@ -264,6 +344,7 @@ const Information = () => {
               <TextField
                 fullWidth={true}
                 required
+                type='number'
                 onChange={(e) =>
                   setData((prev) => ({
                     ...prev,
@@ -279,6 +360,7 @@ const Information = () => {
               <TextField
                 fullWidth={true}
                 required
+                type='number'
                 onChange={(e) =>
                   setData((prev) => ({
                     ...prev,
@@ -291,36 +373,11 @@ const Information = () => {
               />
             </Grid>
           </Box>
-          <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
-            <Grid item md={4} sm={8} xs={12}>
-              <TextField
-                fullWidth={true}
-                required
-                onChange={(e) =>
-                  setData((prev) => ({
-                    ...prev,
-                    emergencyContact: e.target.value,
-                  }))
-                }
-                id="standard-basic"
-                label="Emergency Contact"
-                variant="standard"
-              />
-            </Grid>
-          </Box>
+          
 
-          <Box sx={{ marginTop: 3, display: "flex" }}>
-            <Checkbox onClick={checkBoxTicked}/>
-            <Typography>
-              This Informaition Can NOT Edit once Submit! Kindly Verify Again
-            </Typography>
-          </Box>
+        
           <Box sx={{ marginTop: 5, display: "grid", placeItems: "center" }}>
-            {!checkBox? (
-              <Button variant="contained" color="primary" fullWidth={true} disabled>
-                Submit
-              </Button>
-            ) : (
+            
               <Button
                 variant="contained"
                 color="primary"
@@ -329,7 +386,7 @@ const Information = () => {
               >
                 Subimit
               </Button>
-            )}
+            
           </Box>
         </Grid>
       </Grid>
@@ -337,4 +394,4 @@ const Information = () => {
   );
 };
 
-export default Information;
+export default Regisration;

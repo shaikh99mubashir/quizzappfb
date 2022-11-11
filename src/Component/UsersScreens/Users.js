@@ -7,6 +7,7 @@ import PersistentDrawerLeft from "./UserDashboard";
 import Information from "./Information";
 import CourseRegistration from "./CourseRegistration";
 import PlayQuiz from "./PlayQuiz";
+import StdProfile from "./StdProfile";
 
 const Users = () => {
   const [user, setUser] = useState(false)
@@ -50,6 +51,7 @@ const Users = () => {
         <Route exact path="information" element={<Information />} />
         <Route exact path="courseregistration" element={<CourseRegistration />} />
         <Route exact path="playquiz" element={<PlayQuiz />} />
+        <Route exact path="stdprofile" element={<StdProfile />} />
     </Routes>
     {/* { user?<div>
       <h1>User</h1>

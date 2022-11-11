@@ -95,6 +95,7 @@ export default function PersistentDrawerLeft() {
     { name: "Information", route: "/users/information" },
     { name: "Course Registration", route: "/users/courseregistration" },
     { name: "Play Quiz", route: "/users/playquiz" },
+    { name: "Profile", route: "/users/stdprofile" },
   ];
 
   return (

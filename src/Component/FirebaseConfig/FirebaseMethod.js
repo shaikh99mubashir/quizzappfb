@@ -9,10 +9,11 @@ const auth = getAuth(app);
 
 const signUpUser = (obj) =>{
     
-    let {email,password,firstName, isOwner} = obj
-    console.log(isOwner);
+    let {email,password} = obj
+    console.log(email);
+    console.log(password);
    return new Promise((resolve,reject)=>{
-    createUserWithEmailAndPassword(auth, email, password, firstName)
+    createUserWithEmailAndPassword(auth, email, password)
        .then((success)=>{
         const user  = success.user
         if(user.email === 'owner@gmail.com'){
@@ -23,7 +24,7 @@ const signUpUser = (obj) =>{
             .then(()=>{
                 resolve("data is successfully submitted")
             })
-            .catch((reject)=>{console.log('data nahi gia database ma')})
+            .catch(()=>{reject('data nahi gia database ma')})
         }
         else{
             const reference = ref(database, `users/${user.uid}`) ;

@@ -55,9 +55,9 @@ const Login = () => {
                     <Button variant="contained" color="primary" disabled={isloding} fullWidth onClick={loginBtnClicked}> {isloding?  <CircularProgress style={{color:'black',height:20,width:20}} /> : 'Login'} </Button>
                 </Box>
                 <Box sx={{marginTop : 3}}>
-                <Link to='signup' style={{textDecoration:'none'}}>
+                {/* <Link to='signup' style={{textDecoration:'none'}}>
                     <Button variant="contained" color="primary" fullWidth> Create an Account </Button>
-                </Link>
+                </Link> */}
                 </Box>
             </Box>
         </Grid>

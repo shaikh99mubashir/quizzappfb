@@ -10,7 +10,7 @@ const StudentInfo = () => {
     const [val, setVal] = useState([]);
     const database = getDatabase(app);
     const gettingQuizDataFromFireBase = () => {
-      const reference = ref(database, `students`);
+      const reference = ref(database, `users`);
       onValue(reference, (e) => {
         if (e.exists()) {
           let value = e.val();
@@ -30,6 +30,7 @@ const StudentInfo = () => {
         { field: "id", headerName: "ID", width: 50 },
         { field: "firstName", headerName: "First Name", width: 130 },
         { field: "lastName", headerName: "Last Name", width: 190 },
+        { field: "email", headerName: "Email  ", width: 190 },
         { field: "rollNo", headerName: "Roll NO", width: 190 },
         { field: "section", headerName: "Section", width: 190 },
         { field: "course", headerName: "Course", width: 190 },
@@ -59,6 +60,7 @@ const StudentInfo = () => {
         id: index + 1,
         firstName: row.firstName,
         lastName: row.lastName,
+        email: row.email,
         rollNo: row.rollNo,
         section: row.section,
         course: row.course,

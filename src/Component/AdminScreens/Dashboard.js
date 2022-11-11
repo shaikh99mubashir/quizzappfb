@@ -90,25 +90,34 @@ export default function PersistentDrawerLeft(props) {
       .catch((error) => {
         alert("error");
       });
-  };
+  }; 
   const settings = [
     { name: "Home", route: "/admin" },
     { name: "User Data", route: "/admin/userdata" },
     { name: "Student Info", route: "/admin/studentinfo" },
     { name: "Add Quiz", route: "/admin/addquiz" },
     { name: "Quiz Data", route: "/admin/quizdata" },
+    { name: "Create Course", route: "/admin/course" },
+    { name: "Course Quiz", route: "/admin/coursequiz" },
+    { name: "Course Quiz Data", route: "/admin/coursequizdata" },
+    { name: "Create Result", route: "/admin/createresult" },
+    { name: "Add Countries", route: "/admin/addcountries" },
+    { name: "Add Cities", route: "/admin/addcities" },
+    { name: "Form Control", route: "/admin/formcontrol" },
+    { name: "Form Control Data", route: "/admin/formcontroldata" },
+    { name: "Trainer Registraation Data", route: "/admin/trainerdata" },
   ];
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex" ,padding:'none',}}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+      <AppBar position="fixed" open={open} sx={{padding:'none',}}>
+        <Toolbar sx={{ justifyContent: "space-between",padding:'none' }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
+            sx={{ mr: 2, ...(open && { display: "none",padding:'none' }) }}
           >
             <MenuIcon />
           </IconButton>
@@ -124,6 +133,7 @@ export default function PersistentDrawerLeft(props) {
       </AppBar>
       <Drawer
         sx={{
+          padding:'none',
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
@@ -182,7 +192,9 @@ export default function PersistentDrawerLeft(props) {
         </List>
       </Drawer>
       <Main open={open}>
-        <DrawerHeader></DrawerHeader>
+        <DrawerHeader>
+          
+        </DrawerHeader>
       </Main>
     </Box>
   );
