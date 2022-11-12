@@ -19,8 +19,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link } from 'react-router-dom';
-import { getAuth, signOut } from "firebase/auth";
 import { Button } from '@mui/material';
+import AccountMenu from './AccountMenu';
 
 const drawerWidth = 240;
 
@@ -80,22 +80,12 @@ export default function PersistentDrawerLeft() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const auth = getAuth();
-  const signoutUser = () => {
-    signOut(auth)
-      .then((success) => {
-        // alert(success)
-      })
-      .catch((error) => {
-        alert("error");
-      });
-  };
+
   const settings = [
     { name: "Home", route: "/users" },
     { name: "Information", route: "/users/information" },
     { name: "Course Registration", route: "/users/courseregistration" },
     { name: "Play Quiz", route: "/users/playquiz" },
-    { name: "Profile", route: "/users/stdprofile" },
   ];
 
   return (
@@ -115,11 +105,7 @@ export default function PersistentDrawerLeft() {
           <Typography variant="h6" noWrap component="div">
             User DashBoard
           </Typography>
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <Button sx={{ color: "white" }} onClick={signoutUser}>
-              signOut
-            </Button>
-          </Link>
+          <AccountMenu/>
         </Toolbar>
       </AppBar>
       <Drawer
