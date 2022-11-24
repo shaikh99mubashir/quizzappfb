@@ -64,6 +64,7 @@ const FormControlData = () => {
     },
   ];
 
+  
   React.useEffect(() => {
     gettingResultDataFromFireBase();
   }, []);

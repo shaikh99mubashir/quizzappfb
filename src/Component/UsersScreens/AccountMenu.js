@@ -90,7 +90,7 @@ export default function AccountMenu() {
           <Avatar /> Profile
         </MenuItem>
       </Link>
-        
+        <Divider/>
           <Link to="/" style={{ textDecoration: "none" }}>
         <MenuItem sx={{color:'black'}}>
           <ListItemIcon>

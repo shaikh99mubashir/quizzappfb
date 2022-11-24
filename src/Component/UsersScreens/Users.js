@@ -11,20 +11,13 @@ import StdProfile from "./StdProfile";
 
 const Users = () => {
   const [user, setUser] = useState(false)
-  const location = useLocation();
-  let t = location.state;
-  const database = getDatabase(app);
   const navigate = useNavigate();
   
+  const getUserData = localStorage.getItem('userData')
+  const userData = JSON.parse(getUserData)
+
+  console.log('data',userData)
   const auth = getAuth();
-  const signoutUser = () => {
-    signOut(auth)
-      .then((success) => {
-      })
-      .catch((error) => {
-        alert('error')
-      });
-  };
   const checkUser =()=>{
     onAuthStateChanged(auth, (user) => {
       if(user){
@@ -39,8 +32,20 @@ const Users = () => {
     checkUser()
   }, []);
 
+
+
   const Home = () => {
-    return <div>This is user home page</div>;
+    return <div>This is user home page
+     {/* <div>
+      <h1>User</h1>
+      <h1>{t.fullName}</h1>
+      {t.email}
+      {t.user}
+
+      </div> */}
+   
+    
+    </div>;
   };
 
   return (
@@ -51,7 +56,7 @@ const Users = () => {
         <Route exact path="information" element={<Information />} />
         <Route exact path="courseregistration" element={<CourseRegistration />} />
         <Route exact path="playquiz" element={<PlayQuiz />} />
-        <Route exact path="stdprofile" element={<StdProfile />} />
+        <Route exact path="stdprofile" element={<StdProfile userData={userData} />} />
     </Routes>
     {/* { user?<div>
       <h1>User</h1>
@@ -63,6 +68,13 @@ const Users = () => {
       </div>
       :<div></div>
     } */}
+    {/* <div>
+      <h1>User</h1>
+      <h1>{t.fullName}</h1>
+      {t.email}
+      {t.user}
+
+      </div> */}
     </div>
   );
 };

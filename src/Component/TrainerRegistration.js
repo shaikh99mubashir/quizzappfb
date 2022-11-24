@@ -28,7 +28,6 @@ const TrainerRegistration = () => {
       ],
     });
     setOthersQualification('')
-
   };
 
   const handleDelete = (event) => {

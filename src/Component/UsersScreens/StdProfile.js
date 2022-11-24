@@ -6,16 +6,22 @@ import {
   Grid,
   Paper,
   TextField,
+  Typography,
 } from "@mui/material";
+import { getAuth } from "firebase/auth";
 import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import dummyImg from "../Images/dummyImg.webp";
 import app from "../FirebaseConfig/Config";
-import { getDatabase, ref, push, onValue, remove } from "firebase/database";
+import { getDatabase, ref, onValue, remove } from "firebase/database";
 import { useState } from "react";
-const StdProfile = () => {
-  const [val, setVal] = useState('')
+import { useLocation } from "react-router-dom";
+const StdProfile = (props) => {
+  const { userData } = props;
+  console.log("success", userData);
+
+  const [val, setVal] = useState("");
   const database = getDatabase(app);
   const gettingCountriesDataFromFireBase = () => {
     const reference = ref(database, `users`);
@@ -23,15 +29,15 @@ const StdProfile = () => {
       if (e.exists()) {
         let value = e.val();
         let values = Object.values(value);
-        console.log(values)
-        setVal(values)
+        setVal(values);
       }
     });
   };
-  console.log('val', val)
   React.useEffect(() => {
     gettingCountriesDataFromFireBase();
   }, []);
+
+  console.log("val", val);
 
   return (
     <Box>
@@ -69,42 +75,82 @@ const StdProfile = () => {
                 Edit Profile Image
               </Button>
             </Box>
-            <h1 style={{ color: "grey" }}>Personal Information</h1>
+            <Typography
+              sx={{
+                color: "grey",
+                fontSize: { md: 45, sx: 35, xs: 25 },
+                marginTop: 2,
+              }}
+            >
+              {userData.firstName} {userData.lastName}
+            </Typography>
+            <Typography
+              sx={{
+                color: "grey",
+                fontSize: { md: 20, sx: 15, xs: 11 },
+                marginTop: "0.02rem",
+              }}
+            >
+              {userData.email}
+            </Typography>
 
             <Box
               sx={{
                 display: "flex",
+                justifyContent:'center',
                 flexDirection: { md: "row", sx: "row", xs: "column" },
                 gap: 2,
                 marginTop: 2,
                 marginBottom: 2,
-                width:'100%',
-                paddingLeft:6,
-                paddingRight:6
+                width: "100%",
+                paddingLeft: 6,
+                paddingRight: 6,
               }}
             >
-              <TextField
-                fullWidth={true}
-                value={val.firstName}
-                id="standard-basic"
-                label="First Name"
-                variant="standard"
-              />
-
-              <TextField
-                fullWidth={true}
-                id="standard-basic"
-                label="Last Name"
-                variant="standard"
-              />
-              <TextField
-                fullWidth={true}
-                id="standard-basic"
-                label="Age"
-                variant="standard"
-              />
+            <>
+            <Box width='100%' sx={{display:'flex', justifyContent:'center'}}>
+              <Box>
+                <Typography sx={{ marginBottom:3, fontSize:25}}>Personal Info</Typography>
+                <Box sx={{ display: "flex", gap: 1, width:'20vw', }}>
+                  <Typography sx={{ fontSize: 22 }}>CNIC: </Typography>
+                  <Typography sx={{ fontSize: 22 }}>
+                    {" "}
+                    {userData.cnic}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", gap: 1,width:'20vw'  }}>
+                  <Typography sx={{ fontSize: 22 }}>Contact : </Typography>
+                  <Typography sx={{ fontSize: 22 }}>
+                    {" "}
+                    {userData.contact}
+                  </Typography>
+                </Box>
+              </Box>
+              </Box>
+            <Box width='100%' sx={{display:'flex', justifyContent:'center'}}>
+              <Box>
+              <Typography sx={{ marginBottom:3, fontSize:25}}>Courses Info</Typography>
+                <Box sx={{ display: "flex", gap: 2, width:'30vw', }}>
+                  <Typography sx={{ fontSize: 22 }}>Course: </Typography>
+                  <Typography sx={{ fontSize: 22 }}>
+                    {" "}
+                    {userData.course}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", gap: 1,width:'30vw',   }}>
+                  <Typography sx={{ fontSize: 22 }}>Roll NO : </Typography>
+                  <Typography sx={{ fontSize: 22 }}>
+                    {" "}
+                    {userData.rollNo}
+                  </Typography>
+                </Box>
+              </Box>
+              </Box>
+            </>
+              
+              {/* <Typography sx={{ fontSize: 22 }}></Typography>
+              <Typography sx={{ fontSize: 22 }}>{userData.course}</Typography> */}
             </Box>
-            
           </Card>
         </Grid>
       </Grid>

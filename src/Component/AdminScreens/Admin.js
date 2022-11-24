@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PersistentDrawerLeft from "./Dashboard";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import UserData from "./UserData";
 import AddQuiz from "./AddQuiz";
 import QuizData from "./QuizData";
@@ -17,9 +17,34 @@ import Countries from "./Countries";
 import FormControl from "./FormControl";
 import FormControlData from "./FormControlData";
 import TrainerRegistrationData from "./TrainerRegistrationData";
+import app from "../FirebaseConfig/Config";
 
 const Admin = () => {
+  
   const Home = () => {
+    const navigate = useNavigate()
+    const auth = getAuth(app);
+    
+  //   React.useEffect(()=>{
+  //     onAuthStateChanged(auth, (user) => {
+  //         if (user) {
+  //     const uid = user.uid;
+  //           console.log('uid', uid)
+  //           console.log('user', user)
+  //   } else {
+      
+  //     if (user.isOwner === true) {
+  //       // setLoding(false);
+  //       navigate("/");
+  //     } else {
+  //       // console.log("succes login", success);
+  //       // setLoding(false);
+  //       navigate("/login");
+  //     }
+  //   }
+  // })
+  // },[])
+
     return (
       <Box>
         <Grid container>

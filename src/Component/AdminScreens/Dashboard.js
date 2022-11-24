@@ -82,9 +82,11 @@ export default function PersistentDrawerLeft(props) {
   };
 
   const auth = getAuth();
+  // const navigate = useNavigate();
   const signoutUser = () => {
     signOut(auth)
       .then((success) => {
+        navigate('/')
         // alert(success)
       })
       .catch((error) => {
@@ -163,7 +165,6 @@ export default function PersistentDrawerLeft(props) {
               style={{ textDecoration: "none", color: "black" }}
             > 
               <ListItem
-                
                 onClick={() => setOpen(false)}
                 disablePadding
               >

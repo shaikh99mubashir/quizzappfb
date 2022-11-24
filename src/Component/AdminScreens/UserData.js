@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import app from "../FirebaseConfig/Config";
-import { getDatabase, ref, onValue } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  update,
+  push,
+} from "firebase/database";
 import { Button, Grid, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/system";
@@ -13,19 +20,42 @@ const UserData = () => {
     onValue(reference, (e) => {
       if (e.exists()) {
         let value = e.val();
-        let values = Object.values(value);
-        setVal(values);
+        let entries = Object.entries(value);
+        setVal(
+          entries.map(([key, value], index) => {
+            return {
+              ...value,
+              uid: key,
+              id: index + 1,
+            };
+          })
+        );
       }
     });
   };
-
   React.useEffect(() => {
     gettingDataFromFireBase();
   }, []);
 
-  let key = Object.keys(val);
   // console.log(key);
-  // console.log(val);
+  console.log(val);
+  const promote = (event) => {
+    const { uid } = event;
+    const reference = ref(database, `users/${uid}`);
+    update(reference, { isOwner: !!!event.isOwner });
+    setVal((value) => {
+      return value.map((item, index) => {
+        if (item.uid == event.uid) {
+          return {
+            ...item,
+            isOwner: !!!event.isOwner,
+          };
+        } else return item;
+      });
+    });
+  };
+
+  console.log("VALUE", val);
 
   const columns = [
     { field: "id", headerName: "ID", width: 50 },
@@ -37,7 +67,11 @@ const UserData = () => {
       headerName: "Action",
       width: 130,
       renderCell: (cellValues) => {
-        return <Button variant="contained">Promote</Button>;
+        return (
+          <Button variant="contained" onClick={() => promote(cellValues.row)}>
+            {cellValues.row.isOwner ? "Demote" : "Promote"}
+          </Button>
+        );
       },
     },
     {
@@ -50,27 +84,22 @@ const UserData = () => {
     },
   ];
 
-  const rows = val.map((row, index) => ({
-    id: index + 1,
-    userName: row.fullName,
-    email: row.email,
-  }));
- 
+  // const rows = val.map((row, index) => ({
+  //   id: index + 1,
+  //   userName: row.fullName,
+  //   email: rIUTTow.email,
+  // }));
+
   return (
     <Box sx={{ padding: 5 }}>
       <Typography variant="h5" style={{ textAlign: "center", marginBottom: 3 }}>
         User Details
       </Typography>
       <Grid container>
-        {!rows ? (
-          "loading..."
-        ) : (
-          <Box height={400} width="100%">
-            <DataGrid columns={columns} rows={rows} pageSize={5} />
-          </Box>
-        )}
+        <Box height={400} width="100%">
+          <DataGrid columns={columns} rows={val} pageSize={5} />
+        </Box>
       </Grid>
-
     </Box>
   );
 };

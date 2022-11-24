@@ -61,12 +61,6 @@ const Course = () => {
     setCourseAdded(true);
   };
 
-  // React.useEffect(()=>{
-  //   setTimeout(()=>{
-  //     setCount(false);
-  //   },5000)
-  // },[count])
-
   return (
     <Box>
       <Grid container sx={{ display: "grid", placeItems: "center" }}>

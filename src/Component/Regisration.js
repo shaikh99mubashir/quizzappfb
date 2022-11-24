@@ -65,47 +65,41 @@ const Regisration = () => {
     isFeeSubmited: false,
     isApproved: false,
     isActive: false,
-    rollNo: "0",
-    isOwner:'',
+    rollNo: "78",
+    isOwner: false,
   });
   let userAge = dobYear ? year - dobYear : "";
   const setfeildinDatbase = () => {
-    stdRollNo = Number(data.rollNo);
-    stdRollNo = stdRollNo + 1;
-    stdRollNo = stdRollNo.toString();
-    setStdRollNo(stdRollNo);
-    let roll = `0000${stdRollNo}`;
+    
     data.registrationDate = registrationDateis;
     data.registrationYear = year;
-    data.rollNo = roll;
     data.dob = dobis;
     data.age = year - dobYear;
-    data.section = section
-    data.course = course
+    data.section = section;
+    data.course = course;
     setData(data);
-    let value = Object.values(data)
-    let count = 0
-    value.forEach((e,i)=>{
-      if(e === ""){
-        count = count+1
+    console.log('data', data)
+    let value = Object.values(data);
+    let count = 0;
+    value.forEach((e, i) => {
+      if (e === "") {
+        count = count + 1;
       }
-    })
-    if(count){
-      alert('inComplete Feilds')
-    }
-    else{
+    });
+    if (count) {
+      alert("inComplete Feilds");
+    } else {
       signUpUser(data)
-      .then((success)=>{
-      alert(success)
-      console.log('success==>',success)
-      setData('')
-      navigate('/')
-    })
-    .catch((error)=>{
-        console.log('error==>',error)
-    })  
+        .then((success) => {
+          alert(success);
+          console.log("success==>", success);
+          setData("");
+          navigate("/");
+        })
+        .catch((error) => {
+          console.log("error==>", error);
+        });
     }
-    
   };
   const [firstNameError, setNameError] = useState(false);
   const [fatherNameError, setFatherError] = useState(false);
@@ -149,8 +143,8 @@ const Regisration = () => {
       >
         <Grid
           item
-          md={6}
-          sm={8}
+          md={8}
+          sm={10}
           xs={12}
           sx={{
             border: "1px solid #eeeeee",
@@ -161,7 +155,10 @@ const Regisration = () => {
           }}
         >
           <Box sx={{ display: "grid", placeItems: "center" }}>
-            <Typography variant="p" sx={{ fontSize:{ md:"2.5rem", sm:'2.3rem', xs:'1.5erm' }}}>
+            <Typography
+              variant="p"
+              sx={{ fontSize: { md: "2.5rem", sm: "2.3rem", xs: "1.5erm" } }}
+            >
               Registration
             </Typography>
           </Box>
@@ -236,7 +233,7 @@ const Regisration = () => {
             <Grid item md={4} sm={8} xs={12}>
               <TextField
                 fullWidth={true}
-                type='number'
+                type="number"
                 required
                 onChange={(e) =>
                   setData((prev) => ({ ...prev, contact: e.target.value }))
@@ -254,7 +251,7 @@ const Regisration = () => {
                   setData((prev) => ({ ...prev, cnic: e.target.value }))
                 }
                 id="standard-basic"
-                type='number'
+                type="number"
                 label="Cnic"
                 variant="standard"
               />
@@ -280,7 +277,7 @@ const Regisration = () => {
               <TextField
                 fullWidth={true}
                 required
-                type='number'
+                type="number"
                 onChange={(e) =>
                   setData((prev) => ({
                     ...prev,
@@ -312,8 +309,8 @@ const Regisration = () => {
 
             <Grid item md={4} sm={8} xs={12}>
               <TextField
-                fullWidth
-                type='password'
+                fullWidth={true}
+                type="password"
                 onChange={(e) =>
                   setData((prev) => ({
                     ...prev,
@@ -344,7 +341,7 @@ const Regisration = () => {
               <TextField
                 fullWidth={true}
                 required
-                type='number'
+                type="number"
                 onChange={(e) =>
                   setData((prev) => ({
                     ...prev,
@@ -360,7 +357,7 @@ const Regisration = () => {
               <TextField
                 fullWidth={true}
                 required
-                type='number'
+                type="number"
                 onChange={(e) =>
                   setData((prev) => ({
                     ...prev,
@@ -373,20 +370,16 @@ const Regisration = () => {
               />
             </Grid>
           </Box>
-          
 
-        
           <Box sx={{ marginTop: 5, display: "grid", placeItems: "center" }}>
-            
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth={true}
-                onClick={setfeildinDatbase}
-              >
-                Subimit
-              </Button>
-            
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth={true}
+              onClick={setfeildinDatbase}
+            >
+              Subimit
+            </Button>
           </Box>
         </Grid>
       </Grid>

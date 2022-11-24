@@ -2,7 +2,7 @@ import React from 'react'
 
 const StudentProfile = () => {
   return (
-    <div>StudentProfile</div>
+    <div>StudentProfile user screen ma hai</div>
   )
 }
 
